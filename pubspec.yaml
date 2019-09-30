@@ -17,10 +17,6 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  # build_runner gives an error when analyzer 0.38.3 (default) is used
-  # due to bug in build_runner/analyzer
-  analyzer: 0.38.2
-
   flutter:
     sdk: flutter
 
@@ -38,9 +34,12 @@ dependencies:
   json_annotation: ^3.0.0
   equatable: ^0.2.0
 
-  google_maps_flutter: ^0.5.21+3
 
 dev_dependencies:
+  # build_runner gives an error when analyzer 0.38.3 (default) is used
+  # due to bug in build_runner/analyzer
+  analyzer: 0.38.2
+
   flutter_test:
     sdk: flutter
 
