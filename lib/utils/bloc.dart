@@ -24,7 +24,7 @@ import 'package:equatable/equatable.dart';
 //
 //   @override
 //   toState(current, bloc) {
-//     return CounterState(current.count + by);
+//     yield CounterState(current.count + by);
 //   }
 //   
 //   @override
@@ -32,19 +32,15 @@ import 'package:equatable/equatable.dart';
 // }
 
 
-abstract class BlocEvent<S extends BlocState, B extends BaseBloc>
+abstract class BlocEvent<S, B extends BaseBloc>
     extends Equatable {
   BlocEvent([List props = const []]) : super(props);
 
-  S toState(S current, B bloc);
+  Stream<S> toState(S current, B bloc);
 }
 
-abstract class BlocState extends Equatable {
-  BlocState([List props = const []]) : super(props);
-}
-
-class BaseBloc<S extends BlocState> extends Bloc<BlocEvent, S> {
-  BaseBloc([this._initialState]);
+class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
+  BaseBloc([this._initialState]) : super();
 
   final S _initialState;
 
@@ -52,40 +48,42 @@ class BaseBloc<S extends BlocState> extends Bloc<BlocEvent, S> {
   S get initialState => _initialState;
 
   @override
-  Stream<S> mapEventToState(BlocEvent event) async* {
-    yield event.toState(currentState, this);
+  Stream<S> mapEventToState(BlocEvent<S, dynamic> event) async* {
+    yield* event.toState(currentState, this);
   }
 
   @override
   void onEvent(event) {
-    print("-----");
+    print("\n");
+    print("======");
     print("Event dispatched for bloc: $this");
     print("\tevent: $event");
     print("\t currentState: $currentState");
-    print("-----");
+    print("======");
+    print("\n");
   }
 
   @override
   void onTransition(transition) {
-    print("");
-    print("-----");
+    print("\n");
+    print("======");
     print("Event successfully dispatched for bloc: $this");
     print("\tevent: ${transition.event}");
     print("\tcurrentState: ${transition.currentState}");
     print("\tnextState: ${transition.nextState}");
-    print("-----");
-    print("");
+    print("======");
+    print("\n");
   }
 
   @override
   void onError(Object error, StackTrace stacktrace) {
-    print("");
-    print("-----");
+    print("\n");
+    print("======");
     print("Error occured while dispatching event for bloc: $this");
     print("\terror: $error");
     print("\tstacktrace: $stacktrace");
-    print("-----");
-    print("");
+    print("======");
+    print("\n");
   }
 
   @override
