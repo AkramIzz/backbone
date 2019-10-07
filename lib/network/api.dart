@@ -10,3 +10,7 @@ abstract class Api {
   // @GET('/posts')
   // Future<DataResponse<Task>> getTasks(@Body() Task task);
 }
+
+class MockedApi implements Api {
+  
+}
