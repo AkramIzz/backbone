@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import 'api.dart';
 
@@ -11,57 +10,42 @@ class NetworkCallError {
   NetworkCallError(this.e);
 }
 
-class NetworkCaller<T> {
-  void Function(Api client) _before;
-  void Function(T response) _after;
-  Future<T> Function(Api client) _call;
-  void Function(NetworkCallError error) _onError;
-
+class NetworkCaller {
   final Api client;
 
   NetworkCaller(this.client);
 
-  Future<void> exec() async {
+  Future<T> call<T>(
+    Future<T> call(Api client), {
+    void onError(NetworkCallError e),
+    void before(Api client),
+    void after(Api client),
+  }) async {
     ArgumentError.checkNotNull(call);
-    ArgumentError.checkNotNull(onError);
-    
-    _before?.call(client);
+
+    before?.call(client);
     T response;
     try {
-      response = await _call(client);
-    } on DioError catch(e) {
-      _onError(NetworkCallError(e));
+      response = await call(client);
+    } on DioError catch (e) {
+      print('');
+      print('=============== ERROR ===============');
+      print(e);
+      print('=============== ERROR ===============');
+      print('');
+      onError?.call(NetworkCallError(e));
+    } catch (e, stacktrace) {
+      print('');
+      print('=============== ERROR ===============');
+      print(e);
+      print(stacktrace);
+      print('=============== ERROR ===============');
+      print('');
+      onError(NetworkCallError(null));
     } finally {
-      _after?.call(response);
+      after?.call(client);
     }
-  }
-
-  void call(Future<T> callback(Api client)) {
-    _call = callback;
-  }
-
-  void before(void callback(Api client)) {
-    _before = callback;
-  }
-
-  void after(void callback(T response)) {
-    _after = callback;
-  }
-
-  void onError(void callback(NetworkCallError error)) {
-    _onError = callback;
-  }
-
-  void networkCall({
-    void before(Api client),
-    @required Future<T> call(Api client),
-    void after(T response),
-    @required void onError(NetworkCallError error)
-  }) async {
-    _before = before;
-    _call = call;
-    _after = after;
-    _onError = onError;
-    await exec();
+    // TODO: return either T or Error
+    return response;
   }
 }
