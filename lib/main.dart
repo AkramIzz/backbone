@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mwaslat',
+      title: 'Backbone',
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: AppColors.primary,

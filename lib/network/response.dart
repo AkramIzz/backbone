@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mwaslat/json/json.dart';
+import 'package:backbone/json/json.dart';
 
 part 'response.g.dart';
 

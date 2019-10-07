@@ -1,4 +1,4 @@
-import 'package:mwaslat/network/auth.dart';
+import 'package:backbone/network/auth.dart';
 
 class PersistenceManager implements AuthDataDelegate {
   @override

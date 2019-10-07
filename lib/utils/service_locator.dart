@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mwaslat/network/auth.dart';
-import 'package:mwaslat/utils/persistence_manager.dart';
+import 'package:backbone/network/auth.dart';
+import 'package:backbone/utils/persistence_manager.dart';
 
 import '../network/api.dart';
 import '../network/dio.dart';
