@@ -10,8 +10,8 @@ class BasicResponse {
   int status;
   String message;
 
-  factory BasicResponse.fromJson(JsonMap json) => _$BasicResponseFromJson(json);
-  JsonMap toJson() => _$BasicResponseToJson(this);
+  factory BasicResponse.fromJson(Map<String, dynamic> json) => _$BasicResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$BasicResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -21,8 +21,8 @@ class DataResponse<T> extends BasicResponse {
 
   DataResponse(int status, String message, this.dto) : super(status, message);
   
-  factory DataResponse.fromJson(JsonMap json) => _$DataResponseFromJson(json);
-  JsonMap toJson() => _$DataResponseToJson(this);
+  factory DataResponse.fromJson(Map<String, dynamic> json) => _$DataResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$DataResponseToJson(this);
 }
 
 class ResponseStatus {

@@ -28,7 +28,7 @@ DataResponse<T> _$DataResponseFromJson<T>(Map<String, dynamic> json) {
       $checkedConvert(json, 'status', (v) => v as int),
       $checkedConvert(json, 'message', (v) => v as String),
       $checkedConvert(
-          json, 'dto', (v) => GenericConverter<T>().fromJson(v as JsonMap)),
+          json, 'dto', (v) => GenericConverter<T>().fromJson(v as Map<String, dynamic>)),
     );
     return val;
   });
