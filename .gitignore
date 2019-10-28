@@ -10,6 +10,9 @@
 .svn/
 notes/
 
+#generated
+*.g.dart
+
 # IntelliJ related
 *.iml
 *.ipr
