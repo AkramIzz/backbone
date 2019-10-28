@@ -1,31 +1,41 @@
+import 'package:flutter/foundation.dart';
+
 abstract class OrError<V, E> {
   OrError._();
 
-  factory OrError.value(V value) => _Value<V>._(value);
-  factory OrError.error(E error) => _Error<E>._(error);
+  factory OrError.value(V value) => _Value<V, E>._(value);
+  factory OrError.error(E error) => _Error<V, E>._(error);
+
+  _Error<V, E> get _asError => this as _Error<V, E>;
+  _Value<V, E> get _asValue => this as _Value<V, E>;
 
   bool get isError;
   bool get isValue;
 
-  OrError<V, E> ifError(void then(E e)) {
-    if (this.isError) {
-      then((this as _Error<E>).error);
-    }
-    return this;
+  R incase<R>({
+    @required R Function(V v) value,
+    @required R Function(E e) error,
+  }) {
+    return this.isValue
+        ? value(this._asValue._value)
+        : error(this._asError._error);
   }
 
-  OrError<V, E> ifValue(void then(V v)) {
-    if (this.isValue) {
-      then((this as _Value<V>).value);
-    }
-    return this;
+
+  Stream<R> asyncIncase<R>({
+    Stream<R> Function(V v) value,
+    Stream<R> Function(E e) error,
+  }) {
+    return this.isValue
+        ? value?.call(this._asValue._value) ?? Stream.empty()
+        : error?.call(this._asError._error) ?? Stream.empty();
   }
 }
 
-class _Value<V> extends OrError<V, Null> {
-  _Value._(this.value) : super._();
+class _Value<V, E> extends OrError<V, E> {
+  _Value._(this._value) : super._();
 
-  final V value;
+  final V _value;
 
   @override
   bool get isError => false;
@@ -34,10 +44,10 @@ class _Value<V> extends OrError<V, Null> {
   bool get isValue => true;
 }
 
-class _Error<E> extends OrError<Null, E> {
-  _Error._(this.error) : super._();
+class _Error<V, E> extends OrError<V, E> {
+  _Error._(this._error) : super._();
 
-  final E error;
+  final E _error;
 
   @override
   bool get isError => true;

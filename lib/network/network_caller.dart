@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:backbone/utils/or_error.dart';
 
 import 'api.dart';
 
@@ -15,37 +16,39 @@ class NetworkCaller {
 
   NetworkCaller(this.client);
 
-  Future<T> call<T>(
-    Future<T> call(Api client), {
-    void onError(NetworkCallError e),
+  Future<OrError<T, NetworkCallError>> call<T>(
+    Future<T> delegate(Api client), {
     void before(Api client),
     void after(Api client),
   }) async {
-    ArgumentError.checkNotNull(call);
+    ArgumentError.checkNotNull(delegate);
 
     before?.call(client);
+
     T response;
     try {
-      response = await call(client);
+      response = await delegate(client);
     } on DioError catch (e) {
-      print('');
-      print('=============== ERROR ===============');
-      print(e);
-      print('=============== ERROR ===============');
-      print('');
-      onError?.call(NetworkCallError(e));
+      _logError(e);
+      return OrError.error(NetworkCallError(e));
     } catch (e, stacktrace) {
-      print('');
-      print('=============== ERROR ===============');
-      print(e);
-      print(stacktrace);
-      print('=============== ERROR ===============');
-      print('');
-      onError(NetworkCallError(null));
-    } finally {
-      after?.call(client);
+      _logError(e, stacktrace);
+      return OrError.error(NetworkCallError(null));
     }
-    // TODO: return either T or Error
-    return response;
+
+    after?.call(client);
+
+    return OrError.value(response);
+  }
+
+  void _logError<E>(E e, [StackTrace stacktrace]) {
+    print('');
+    print('=============== ERROR ===============');
+    print(e);
+    if (stacktrace != null) {
+      print(stacktrace);
+    }
+    print('=============== ERROR ===============');
+    print('');
   }
 }
