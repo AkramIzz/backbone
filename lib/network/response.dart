@@ -17,9 +17,9 @@ class BasicResponse {
 @JsonSerializable()
 class DataResponse<T> extends BasicResponse {
   @GenericConverter()
-  T dto;
+  T data;
 
-  DataResponse(int status, String message, this.dto) : super(status, message);
+  DataResponse(int status, String message, this.data) : super(status, message);
   
   factory DataResponse.fromJson(Map<String, dynamic> json) => _$DataResponseFromJson(json);
   Map<String, dynamic> toJson() => _$DataResponseToJson(this);
