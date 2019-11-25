@@ -22,8 +22,9 @@ dependencies:
 
   get_it: ^3.0.1
   provider: ^3.1.0
-  bloc: ^0.15.0
-  flutter_bloc: ^0.21.0
+  bloc: ^1.0.0
+  flutter_bloc: ^1.0.0
+  hydrated_bloc: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -34,6 +35,7 @@ dependencies:
   json_annotation: ^3.0.0
   equatable: ^0.2.0
 
+  shared_preferences: 0.5.4+3
 
 dev_dependencies:
   # build_runner gives an error when analyzer 0.38.3 (default) is used
