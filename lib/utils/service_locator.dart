@@ -1,19 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:backbone/network/auth.dart';
-import 'package:backbone/utils/persistence_manager.dart';
 
-import '../network/api.dart';
-import '../network/dio.dart';
-import '../network/network_caller.dart';
+import 'package:backbone/network/api.dart';
+import 'package:backbone/network/dio.dart';
+import 'package:backbone/network/network_caller.dart';
+import 'package:backbone/utils/persistence_manager.dart';
 
 final serviceLocator = GetIt.instance;
 
 void setupServiceLocator() {
-  serviceLocator.registerSingleton<PersistenceManager>(PersistenceManager());
-  AuthDataDelegate delegate = serviceLocator.get<PersistenceManager>();
-  serviceLocator.registerSingleton<Dio>(DioFactory.withDefaultInterceptors(authDataDelegate: delegate));
-  // serviceLocator.registerFactory<Api>(() => Api(serviceLocator.get<Dio>()));
-  serviceLocator.registerFactory<Api>(() => MockedApi());
-  serviceLocator.registerFactory<NetworkCaller>(() => NetworkCaller(serviceLocator.get<Api>()));
+  final persistenceManager = PersistenceManager()..init();
+  serviceLocator.registerSingleton<PersistenceManager>(persistenceManager);
+  serviceLocator.registerSingleton<SettingsStorage>(persistenceManager);
+  serviceLocator.registerSingleton<UserStorage>(persistenceManager);
+  serviceLocator.registerSingleton<Dio>(DioFactory.withDefaultInterceptors());
+  serviceLocator.registerFactory<Api>(() => Api(serviceLocator.get<Dio>()));
+  serviceLocator.registerSingleton<NetworkCaller>(NetworkCaller(serviceLocator.get<Api>()));
 }
