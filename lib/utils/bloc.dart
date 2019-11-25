@@ -49,7 +49,7 @@ class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
 
   @override
   Stream<S> mapEventToState(BlocEvent<S, dynamic> event) async* {
-    yield* event.toState(currentState, this);
+    yield* event.toState(state, this);
   }
 
   @override
@@ -58,7 +58,7 @@ class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
     print("======");
     print("Event dispatched for bloc: $this");
     print("\tevent: $event");
-    print("\t currentState: $currentState");
+    print("\t currentState: $state");
     print("======");
     print("\n");
   }
