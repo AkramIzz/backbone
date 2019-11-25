@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:backbone/utils/persistence_manager.dart';
+import 'package:backbone/utils/service_locator.dart';
 
 abstract class AuthDataDelegate {
   bool get isLoggedIn;
@@ -6,14 +8,14 @@ abstract class AuthDataDelegate {
 }
 
 class AuthInterceptor extends Interceptor {
-  AuthInterceptor({this.authDataDelegate});
+  AuthInterceptor();
 
-  final AuthDataDelegate authDataDelegate;
+  final user = serviceLocator.get<UserStorage>();
 
   @override
   onRequest(Options options) {
-    if (authDataDelegate.isLoggedIn && authDataDelegate.accessToken != null) {
-      options.headers['Authorization'] = authDataDelegate.accessToken;
+    if (user.isLoggedIn && user.accessToken != null) {
+      options.headers['Authorization'] = user.accessToken;
     }
     return options;
   }

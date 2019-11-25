@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import 'auth.dart';
 
@@ -9,15 +8,15 @@ class DioFactory {
     return dio;
   }
 
-  static Dio withDefaultInterceptors({@required AuthDataDelegate authDataDelegate}) {
-    return create(getDefaultInterceptors(authDataDelegate: authDataDelegate));
+  static Dio withDefaultInterceptors() {
+    return create(getDefaultInterceptors());
   }
 
-  static Interceptors getDefaultInterceptors({@required AuthDataDelegate authDataDelegate}) {
+  static Interceptors getDefaultInterceptors() {
     return Interceptors()
       ..addAll([
         LogInterceptor(requestBody: true, responseBody: true),
-        AuthInterceptor(authDataDelegate: authDataDelegate),
+        AuthInterceptor(),
       ]);
   }
 }
