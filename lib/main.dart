@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'ui/pages/home/home.dart';
 import 'ui/style/colors.dart';
 import 'utils/service_locator.dart';
 
-void main() {
+void main() async {
   setupServiceLocator();
+  BlocSupervisor.delegate = await HydratedBlocDelegate.build();
   runApp(MyApp());
 }
 
