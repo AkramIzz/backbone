@@ -1,21 +1,18 @@
-import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-abstract class BlocEvent<S, B extends PersistentBloc>
-    extends Equatable {
-  BlocEvent([List props = const []]) : super(props);
+abstract class BlocEvent<S, B extends PersistentBloc> {
+  const BlocEvent();
 
   Stream<S> toState(S current, B bloc);
 }
 
 abstract class PersistentBloc<S> extends HydratedBloc<BlocEvent<S, PersistentBloc>, S> {
-  PersistentBloc([this._initialState]) : super();
+  PersistentBloc([this._state]) : super(_state);
 
-  final S _initialState;
+  final S _state;
 
-  @override
-  S get initialState {
-    final savedState = super.initialState;
+  S get state {
+    final savedState = super.state;
     print('\n');
     print('=======');
     if (savedState == null) {
@@ -26,7 +23,7 @@ abstract class PersistentBloc<S> extends HydratedBloc<BlocEvent<S, PersistentBlo
     }
     print('=======');
     print('\n');
-    return savedState ?? _initialState;
+    return savedState ?? _state;
   }
 
   @override
@@ -36,6 +33,7 @@ abstract class PersistentBloc<S> extends HydratedBloc<BlocEvent<S, PersistentBlo
 
   @override
   void onEvent(event) {
+    super.onEvent(event);
     print("\n");
     print("======");
     print("Event dispatched for bloc: $this");
@@ -47,6 +45,7 @@ abstract class PersistentBloc<S> extends HydratedBloc<BlocEvent<S, PersistentBlo
 
   @override
   void onTransition(transition) {
+    super.onTransition(transition);
     print("\n");
     print("======");
     print("Event successfully dispatched for bloc: $this");
@@ -58,12 +57,13 @@ abstract class PersistentBloc<S> extends HydratedBloc<BlocEvent<S, PersistentBlo
   }
 
   @override
-  void onError(Object error, StackTrace stacktrace) {
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
     print("\n");
     print("======");
     print("Error occured while dispatching event for bloc: $this");
     print("\terror: $error");
-    print("\tstacktrace: $stacktrace");
+    print("\tstacktrace: $stackTrace");
     print("======");
     print("\n");
   }

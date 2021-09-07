@@ -15,5 +15,5 @@ void setupServiceLocator() {
   serviceLocator.registerSingleton<UserStorage>(persistenceManager);
   serviceLocator.registerSingleton<Dio>(DioFactory.withDefaultInterceptors());
   serviceLocator.registerFactory<Api>(() => Api(serviceLocator.get<Dio>()));
-  serviceLocator.registerSingleton<NetworkCaller>(NetworkCaller(serviceLocator.get<Api>()));
+  serviceLocator.registerSingleton<NetworkCaller>(NetworkCaller());
 }

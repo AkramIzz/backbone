@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 // Example Usage: The infamous flutter counter example
 //
@@ -32,19 +31,17 @@ import 'package:equatable/equatable.dart';
 // }
 
 
-abstract class BlocEvent<S, B extends BaseBloc>
-    extends Equatable {
-  BlocEvent([List props = const []]) : super(props);
+abstract class BlocEvent<S, B extends BaseBloc> {
+  const BlocEvent();
 
   Stream<S> toState(S current, B bloc);
 }
 
 class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
-  BaseBloc([this._initialState]) : super();
+  BaseBloc([this._initialState]) : super(_initialState);
 
   final S _initialState;
 
-  @override
   S get initialState => _initialState;
 
   @override
@@ -54,6 +51,7 @@ class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
 
   @override
   void onEvent(event) {
+    super.onEvent(event);
     print("\n");
     print("======");
     print("Event dispatched for bloc: $this");
@@ -65,6 +63,7 @@ class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
 
   @override
   void onTransition(transition) {
+    super.onTransition(transition);
     print("\n");
     print("======");
     print("Event successfully dispatched for bloc: $this");
@@ -76,12 +75,13 @@ class BaseBloc<S> extends Bloc<BlocEvent<S, BaseBloc>, S> {
   }
 
   @override
-  void onError(Object error, StackTrace stacktrace) {
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
     print("\n");
     print("======");
     print("Error occured while dispatching event for bloc: $this");
     print("\terror: $error");
-    print("\tstacktrace: $stacktrace");
+    print("\tstacktrace: $stackTrace");
     print("======");
     print("\n");
   }

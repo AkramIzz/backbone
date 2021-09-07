@@ -12,6 +12,12 @@ abstract class OrError<V, E> {
   bool get isError;
   bool get isValue;
 
+  /// use in places where `this` is guaranteed to be a value
+  V get asValue => (this as _Value<V, E>)._value;
+
+  /// use in places where `this` is guaranteed to be an error
+  E get asError => (this as _Error<V, E>)._error;
+
   R incase<R>({
     @required R Function(V v) value,
     @required R Function(E e) error,
@@ -21,6 +27,18 @@ abstract class OrError<V, E> {
         : error(this._asError._error);
   }
 
+  OrError<VM, EM> map<VM, EM>({
+    VM Function(V v) value,
+    EM Function(E e) error,
+  }) {
+    return this.isValue
+        ? OrError.value((value ?? _valueUnity).call(this._asValue._value))
+        : OrError.error((error ?? _errorUnity).call(this._asError._error));
+  }
+
+  V _valueUnity(V v) => v;
+
+  E _errorUnity(E e) => e;
 
   Stream<R> asyncIncase<R>({
     Stream<R> Function(V v) value,

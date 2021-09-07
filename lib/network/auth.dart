@@ -13,10 +13,10 @@ class AuthInterceptor extends Interceptor {
   final user = serviceLocator.get<UserStorage>();
 
   @override
-  onRequest(Options options) {
+  onRequest(options, handler) {
     if (user.isLoggedIn && user.accessToken != null) {
       options.headers['Authorization'] = user.accessToken;
     }
-    return options;
+    return handler.next(options);
   }
 }

@@ -14,40 +14,43 @@ description: A transportation app project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  get_it: ^3.0.1
-  provider: ^3.1.0
-  bloc: ^1.0.0
-  flutter_bloc: ^1.0.0
-  hydrated_bloc: ^1.1.0
-
+  get_it: ^7.2.0
+  provider: ^6.0.0
+  bloc: ^7.1.0
+  flutter_bloc: ^7.2.0
+  hydrated_bloc: ^7.0.1
+  
+  path_provider: ^2.0.3
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.3
 
-  dio: ^2.1.16
-  retrofit: ^0.6.3
-  json_annotation: ^3.0.0
-  equatable: ^0.2.0
+  dio: ^4.0.0
+  retrofit: ^2.0.1
+  json_annotation: ^4.1.0
+  equatable: ^2.0.3
 
-  shared_preferences: 0.5.4+3
+  shared_preferences: ^2.0.7
 
 dev_dependencies:
-  # build_runner gives an error when analyzer 0.38.3 (default) is used
-  # due to bug in build_runner/analyzer
-  analyzer: 0.38.2
-
   flutter_test:
     sdk: flutter
 
-  build_runner: ^1.7.1
-  json_serializable: ^3.2.2
-  retrofit_generator: ^0.6.3+1
+  build_runner: ^2.1.2
+  json_serializable: ^5.0.0
+  retrofit_generator: ^2.0.1+1
+
+dependency_overrides:
+  # flutter_test depends on exact versions but these are compatible (same major version)
+  meta: ^1.4.0
+  async: ^2.6.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
